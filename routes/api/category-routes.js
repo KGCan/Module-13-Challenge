@@ -25,7 +25,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
-    /* req.body should look like this...
+  /* req.body should look like this...
     {
       category_name: "Shorts",
     }
@@ -41,10 +41,36 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
+  /* req.body should look like this...
+    {
+      category_name: "Shorts",
+    }
+  */
+  Category.update(req.body, {
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((category) => res.json(category))
+    .catch((err) => {
+  //console.log(err)
+  res.status(400).json(err);
+  });
 });
+
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
+  Category.destroy({
+    where: {
+      id: req.params.id,
+    },
+  }).then((result) => {
+    console.log(result);
+    res.status(200).json(result);
+  }).catch((err) => {
+    res.status(400).json(err);
+  });
 });
 
 module.exports = router;
